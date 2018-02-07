@@ -8,7 +8,7 @@ yy = smooth(a(:,2),a(:,1),'moving');
 figure;
 plot(a(:,2),yy);
 figure;
-fig = fit(a(:,2),a(:,1),'poly')
+fig = fit(a(:,2),a(:,1),'poly9')
 plot(fig)
 
 %%
