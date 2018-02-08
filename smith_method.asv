@@ -7,17 +7,17 @@ y1 = y;
 plot(t,y)
 
 %% 
-yy = smooth(a(:,2),a(:,1),'moving');
-figure;
-plot(a(:,2),yy);
-figure;
-fig = fit(t,y,'poly9'); % fitted curve
-plot(fig)
+%yy = smooth(a(:,2),a(:,1),'moving');
+%figure;
+%plot(a(:,2),yy);
+%figure;
+%fig = fit(t,y,'poly9'); % fitted curve
+%plot(fig)
 
 
 
 %%  Curve Fitting
-[b,S,mu]  = polyfit(t, y, 15);
+[b,S,mu]  = polyfit(t, y, 9);
 fy = polyval(b,t,S,mu);
 y = fy;
 
@@ -58,6 +58,5 @@ axis([xlim    min(min(y),intcpt)  ceil(max(y))])
 
 t2 = a(196,2);
 %%
-g1 = tf([],[],'OutputDelay',theta);%na função gerada
-y=step(g1)
+tf([][])%na função gerada
 
