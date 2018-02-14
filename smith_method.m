@@ -1,23 +1,23 @@
 %% read file
 
-a = dlmread('conjunto2.txt');
+a = dlmread('conjunto5.txt');
 t = a(:,2);
 y = a(:,1); %y(t)
 y1 = y;
 plot(t,y)
 
 %% 
-yy = smooth(a(:,2),a(:,1),'moving');
+%yy2 = smooth(a(:,2),a(:,1),'sgolay');
+yy2 = sgolayfilt(y,2,51);
 figure;
-plot(a(:,2),yy);
-figure;
-fig = fit(t,y,'poly9'); % fitted curve
-plot(fig)
+plot(a(:,2),yy2);
+hold on
+plot(t,y);
 
 
 
 %%  Curve Fitting
-[b,S,mu]  = polyfit(t, y, 15);
+[b,S,mu]  = polyfit(t, yy2, 15);
 fy = polyval(b,t,S,mu);
 y = fy;
 
@@ -35,12 +35,14 @@ tngt = slope*t + intcpt;                                        % Calculate Tang
 
 %%
 
-max = a(196,1); % ver tamanho
+max = a(185,1); % ver tamanho
 % aqui é a(196,1) , por conta da matriz que y,t;
 %estavamos pegando o tempo antes
+min = a(1,1);
 
 %% Plot
 figure;
+
 plot(t, y1)     % Plot original
 hold on 
 plot(t, fy)     % plot fitting
@@ -55,9 +57,16 @@ axis([xlim    min(min(y),intcpt)  ceil(max(y))])
 
 %% Ziegler-Nichols
 
+t1 = -intcpt/slope;
+t2 = (max-intcpt)/slope;
 
-t2 = a(196,2);
-%%
-g1 = tf([],[],'OutputDelay',theta);%na função gerada
-y=step(g1)
+tau = t2 - t1;
+theta = t1;
+kp = max - min;
 
+g1 = tf([kp],[tau,1],'OutputDelay',theta)
+[y,t_step] =step(g1);
+
+
+%% Comparando com entrada ao degrau
+plot(y,t);
