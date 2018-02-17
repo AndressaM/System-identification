@@ -4,7 +4,7 @@ a = dlmread('conjunto5.txt');
 t = a(:,2);
 y = a(:,1); %y(t)
 y1 = y;
-plot(t,y)
+plot(t,y,'r')
 
 %% 
 %yy2 = smooth(a(:,2),a(:,1),'sgolay');
@@ -35,7 +35,7 @@ tngt = slope*t + intcpt;                                        % Calculate Tang
 
 %%
 
-max = a(185,1); % ver tamanho
+max = a(196,1); % ver tamanho
 % aqui é a(196,1) , por conta da matriz que y,t;
 %estavamos pegando o tempo antes
 min = a(1,1);
@@ -58,6 +58,9 @@ axis([xlim    min(min(y),intcpt)  ceil(max(y))])
 %% Ziegler-Nichols
 
 t1 = -intcpt/slope;
+if(t1<0) 
+    t1 = 0;
+end
 t2 = (max-intcpt)/slope;
 
 tau = t2 - t1;
@@ -70,3 +73,34 @@ g1 = tf([kp],[tau,1],'OutputDelay',theta)
 
 %% Comparando com entrada ao degrau
 plot(y,t);
+%% smith
+yf = max;
+t2 = yf*(0.632);
+t1 = yf*(0.283);
+kp = max - min;
+tau = 1.5*(t2-t1);
+theta=t2-tau;
+
+g1 = tf([kp],[tau,1],'OutputDelay',theta)
+[y,t_step] =step(g1);
+%% Hagglund
+
+kp = max - min;
+t1 = -intcpt/slope;
+if(t1<0) 
+    t1 = 0;
+end
+t2 = (max-intcpt)/slope;
+theta = t1;
+t3 = max*(0.632);
+tau = t3-t2;
+
+g1 = tf([kp],[tau,1],'OutputDelay',theta)
+[y,t_step] =step(g1);
+
+%% 2	0.42	3.22	3.5	3.08
+%0.66	0.57	1.95	2.33	1.76
+hold on
+g1 = tf([0.66],[0.57,1],'OutputDelay',1.76);
+step(g1);
+
