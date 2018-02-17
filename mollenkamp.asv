@@ -1,0 +1,7 @@
+%%Mollenkamp
+t1=input('Valor de t1:');
+t2=input('Valor de t2:');
+t1=input('Valor de t3:');
+x=(t2-t1)/(t3-t1);
+zeta = (0.085-(5.547)*(0.47))
+
