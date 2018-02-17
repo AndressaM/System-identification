@@ -1,4 +1,6 @@
 %%Mollenkamp
+s = tf('s');
+
 t1=input('Valor de t1: ');
 t2=input('Valor de t2: ');
 t3=input('Valor de t3: ');
@@ -12,8 +14,20 @@ end
 wn=f2/(t3-t1);
 f3=(0.922)*(1.66^zeta);
 teta = t2-(f3/wn);
-tal1=(zeta+sqrt(zeta^2-1))/wn;
-tal2=(zeta-sqrt(zeta^2-1))/wn;
+
+if (zeta > 1)
+    tau1=(zeta+sqrt(zeta^2-1))/wn;
+    tau2=(zeta-sqrt(zeta^2-1))/wn;
+    Gs1 = exp(-theta*s)*K/((tau1*s+1)*(tau2*s+1));
+    
+else
+    tau = 1/wn;
+    Gs1 = exp(-theta*s)*K/(tau*s^2 + 2*zeta*tau*s + 1);
+end
+
+%Gs = exp(-theta*s)*wn^2/(s^2 + 2*zeta*wn*s + wn^2);
+
+
 
     
 

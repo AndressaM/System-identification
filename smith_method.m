@@ -1,15 +1,15 @@
 %% read file
 
-a = dlmread('conjunto5.txt');
+a = dlmread('conjunto3.txt');
 t = a(:,2);
 y = a(:,1); %y(t)
 y1 = y;
-plot(t,y,'r')
+%plot(t,y,'r')
 
 %% 
 %yy2 = smooth(a(:,2),a(:,1),'sgolay');
 yy2 = sgolayfilt(y,2,51);
-figure;
+figure; 
 plot(a(:,2),yy2);
 hold on
 plot(t,y);
