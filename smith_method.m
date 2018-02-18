@@ -35,7 +35,7 @@ tngt = slope*t + intcpt;                                        % Calculate Tang
 
 %%
 
-max = a(196,1); % ver tamanho
+max = a(150,1); % ver tamanho
 % aqui é a(196,1) , por conta da matriz que y,t;
 %estavamos pegando o tempo antes
 min = a(1,1);
@@ -70,13 +70,19 @@ kp = max - min;
 g1 = tf([kp],[tau,1],'OutputDelay',theta)
 [y,t_step] =step(g1);
 
+%% e(t)
+e = yy2-y;
+EQM = sum(e.^2)/lenght;
+IAE = sum(abs(e));
+ISE = sum(e.^2);
+%ITAE
 
 %% Comparando com entrada ao degrau
 plot(y,t);
 %% smith
 yf = max;
-t2 = yf*(0.632);
-t1 = yf*(0.283);
+t1 = input('Valor de t1');
+t2 = input('Valor de t2');
 kp = max - min;
 tau = 1.5*(t2-t1);
 theta=t2-tau;
