@@ -1,6 +1,6 @@
 %%Mollenkamp
 s = tf('s');
-
+K =input('Valor de K: ');
 t1=input('Valor de t1: ');
 t2=input('Valor de t2: ');
 t3=input('Valor de t3: ');
@@ -13,7 +13,7 @@ else
 end
 wn=f2/(t3-t1);
 f3=(0.922)*(1.66^zeta);
-teta = t2-(f3/wn);
+theta = t2-(f3/wn);
 
 if (zeta > 1)
     tau1=(zeta+sqrt(zeta^2-1))/wn;

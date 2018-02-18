@@ -4,7 +4,7 @@ a = dlmread('conjunto3.txt');
 t = a(:,2);
 y = a(:,1); %y(t)
 y1 = y;
-%plot(t,y,'r')
+plot(t,y,'r')
 
 %% 
 %yy2 = smooth(a(:,2),a(:,1),'sgolay');
@@ -68,7 +68,7 @@ theta = t1;
 kp = max - min;
 
 g1 = tf([kp],[tau,1],'OutputDelay',theta)
-[y,t_step] =step(g1);
+[y,t_step] =step(g1,7);
 
 %% e(t)
 e = yy2-y;
@@ -79,16 +79,7 @@ ISE = sum(e.^2);
 
 %% Comparando com entrada ao degrau
 plot(y,t);
-%% smith
-yf = max;
-t1 = input('Valor de t1');
-t2 = input('Valor de t2');
-kp = max - min;
-tau = 1.5*(t2-t1);
-theta=t2-tau;
 
-g1 = tf([kp],[tau,1],'OutputDelay',theta)
-[y,t_step] =step(g1);
 %% Hagglund
 
 kp = max - min;
@@ -98,15 +89,32 @@ if(t1<0)
 end
 t2 = (max-intcpt)/slope;
 theta = t1;
-t3 = max*(0.632);
+t3 = input('Valor de t3 63,2%:');
 tau = t3-t2;
 
-g1 = tf([kp],[tau,1],'OutputDelay',theta)
-[y,t_step] =step(g1);
+g2 = tf([kp],[tau,1],'OutputDelay',theta)
+[y,t_step] =step(g2);
 
-%% 2	0.42	3.22	3.5	3.08
-%0.66	0.57	1.95	2.33	1.76
+%% Smith 1end Order
+
+K =input('Valor de K: ');
+t1=input('Valor de t1: ');
+t2=input('Valor de t2: ');
+
+tau = 1.5*(t2-t1);
+theta = t2-tau;
+
+g3 = tf([kp],[tau,1],'OutputDelay',theta);
+
+
+
+
+%% PLot 
+
+plot(t,y1);
 hold on
-g1 = tf([0.66],[0.57,1],'OutputDelay',1.76);
 step(g1);
+step(g2);
+step(g3);
+
 
