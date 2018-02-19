@@ -1,18 +1,18 @@
 %% read file
 
-a = dlmread('conjunto3.txt');
+a = dlmread('conjunto1.txt');
 t = a(:,2);
 y = a(:,1); %y(t)
 y1 = y;
-plot(t,y,'r')
+%plot(t,y,'r')
 
 %% 
 %yy2 = smooth(a(:,2),a(:,1),'sgolay');
 yy2 = sgolayfilt(y,2,51);
 figure; 
-plot(a(:,2),yy2);
-hold on
-plot(t,y);
+%plot(a(:,2),yy2);
+%hold on
+%plot(t,y);
 
 
 
@@ -35,7 +35,7 @@ tngt = slope*t + intcpt;                                        % Calculate Tang
 
 %%
 
-max = a(150,1); % ver tamanho
+max = a(196,1); % ver tamanho
 % aqui é a(196,1) , por conta da matriz que y,t;
 %estavamos pegando o tempo antes
 min = a(1,1);
@@ -67,8 +67,8 @@ tau = t2 - t1;
 theta = t1;
 kp = max - min;
 
-g1 = tf([kp],[tau,1],'OutputDelay',theta)
-[y,t_step] =step(g1,7);
+Gzn = tf([kp],[tau,1],'OutputDelay',theta)
+[y,t_step] =step(Gzn,7);
 
 %% e(t)
 e = yy2-y;
@@ -90,10 +90,10 @@ end
 t2 = (max-intcpt)/slope;
 theta = t1;
 t3 = input('Valor de t3 63,2%:');
-tau = t3-t2;
+tau = t3-t1;
 
-g2 = tf([kp],[tau,1],'OutputDelay',theta)
-[y,t_step] =step(g2);
+GHAG = tf([kp],[tau,1],'OutputDelay',theta)
+[y,t_step] =step(GHAG);
 
 %% Smith 1end Order
 
@@ -103,18 +103,36 @@ t2=input('Valor de t2: ');
 
 tau = 1.5*(t2-t1);
 theta = t2-tau;
+if(theta<0)
+    theta=0;
+end
 
-g3 = tf([kp],[tau,1],'OutputDelay',theta);
+GS1 = tf([kp],[tau,1],'OutputDelay',theta);
 
 
+%% Sundaresan e Krishmawany
+
+K =input('Valor de K: ');
+t1=input('Valor de t1: ');
+t2=input('Valor de t2: ');
+
+tau = 0.67*(t2-t1);
+theta = 1.3*t1-0.29*t2;
+
+GSK = tf([kp],[tau,1],'OutputDelay',theta);
 
 
 %% PLot 
 
 plot(t,y1);
 hold on
-step(g1);
-step(g2);
-step(g3);
+step(Gzn,0.9);%ZeN
+step(GHAG,0.9); %haglund
+step(GS1,0.9);%Smith 1
+step(GSK,0.9);%SeK
+step(GM,0.9); %mollenkamp
+step(GS2,0.9);%Smith 2
+title('CONJUNTO 1');
+legend('Curval Original','Zigler e Nichols','Hägglund','Smith 1º ordem','Sudaresan e Krishnaswamy','MollenKamp','Smith 2º ordem');
 
 
