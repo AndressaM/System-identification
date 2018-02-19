@@ -1,5 +1,6 @@
 %%Mollenkamp
-s = tf('s');
+syms s
+
 K =input('Valor de K: ');
 t15=input('Valor de t15: ');
 t45=input('Valor de t45: ');
@@ -29,7 +30,20 @@ end
 
 %Gs = exp(-theta*s)*wn^2/(s^2 + 2*zeta*wn*s + wn^2);
 
+%%
+GM2 = GM/s;
+gt = ilaplace(GM2);
+ht = matlabFunction(gt);
+y2 = ht(t);
 
+plot(t,y2);
+
+%% e(t)
+e = y2-y1;
+EQM = sum(e.^2)/150;
+IAE = sum(abs(e));
+ISE = sum(e.^2);
+%ITAE
 
     
 

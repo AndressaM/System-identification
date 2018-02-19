@@ -1,6 +1,6 @@
 %% read file
 
-a = dlmread('conjunto1.txt');
+a = dlmread('conjunto3.txt');
 t = a(:,2);
 y = a(:,1); %y(t)
 y1 = y;
