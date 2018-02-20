@@ -1,6 +1,4 @@
-%% read file
-
-a = dlmread('conjunto6.txt');
+a = dlmread('conjunto3.txt');
 t = a(:,2);
 y = a(:,1); %y(t)
 y1 = y;
@@ -10,7 +8,7 @@ y1 = y;
 %yy2 = smooth(a(:,2),a(:,1),'sgolay');
 yy2 = sgolayfilt(y,2,51);
 figure; 
-plot(a(:,2),yy2);
+%plot(a(:,2),yy2);
 %hold on
 %plot(t,y);
 
@@ -35,8 +33,7 @@ tngt = slope*t + intcpt;                                        % Calculate Tang
 
 %%
 
-[size,aux] = size(y);
-max = a(size,1);; % ver tamanho
+max = a(196,1); % ver tamanho
 % aqui é a(196,1) , por conta da matriz que y,t;
 %estavamos pegando o tempo antes
 min = a(1,1);
@@ -127,13 +124,11 @@ GSK = tf([kp],[tau,1],'OutputDelay',theta);
 
 plot(t,y1);
 hold on
-step(Gzn,16);%ZeN
-step(GHAG,16); %haglund
-step(GS1,16);%Smith 1
-step(GSK,16);%SeK
-step(GM,16); %mollenkamp
-step(GS2,16);%Smith 2
-title('CONJUNTO 6');
-legend('Curval Original','Zigler e Nichols','Hägglund','Smith 1º ordem','Sudaresan e Krishnaswamy','MollenKamp','Smith 2º ordem');
-
-
+step(Gzn,0.9);%ZeN
+step(GHAG,0.9); %haglund
+step(GS1,0.9);%Smith 1
+step(GSK,0.9);%SeK
+step(GM,0.9); %mollenkamp
+step(GS2,0.9);%Smith 2
+title('CONJUNTO 1');
+legend('Curval Original','Zigler e Nichols','Hägglund','Smith 1º ordem','Sudaresan e Krishnaswamy','MollenKamp','Smith 2º ordem')
