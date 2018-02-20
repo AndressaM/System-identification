@@ -1,7 +1,7 @@
 %% read file
 syms s;
 
-a = dlmread('conjunto1.txt');
+a = dlmread('conjunto2.txt');
 t = a(:,2);
 y = a(:,1); %y(t)
 y1 = y;
@@ -78,18 +78,8 @@ ht = matlabFunction(gt);
 y_step = ht(t);
 plot(t,y_step)
 
-%% e(t)
-e = yy2-y_step;
-e_sum = sum(e.^2);
-
-EQM = e_sum/size;
-IAE = sum(abs(e));
-ISE = e_sum;
-ITAE = sum(t.*e);
-
-
 % e(t)
-e = yy2-y_step;
+e = y1-y_step;
 e_sum = sum(e.^2);
 
 EQM = e_sum/size;
@@ -121,7 +111,7 @@ y_step = ht(t);
 plot(t,y_step)
 
 % e(t)
-e = yy2-y_step;
+e = y1-y_step;
 e_sum = sum(e.^2);
 
 EQM = e_sum/size;
@@ -150,7 +140,7 @@ y_step = ht(t);
 plot(t,y_step)
 
 % e(t)
-e = yy2-y_step;
+e = y1-y_step;
 e_sum = sum(e.^2);
 
 EQM = e_sum/size;
@@ -177,7 +167,7 @@ y_step = ht(t);
 plot(t,y_step)
 
 % e(t)
-e = yy2-y_step;
+e = y1-y_step;
 e_sum = sum(e.^2);
 
 EQM = e_sum/size;

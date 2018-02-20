@@ -34,7 +34,7 @@ y2 = ht(t);
 
 % e(t)
 
-e = yy2-y2;
+e = y1-y2;
 e_sum = sum(e.^2);
 
 EQM = e_sum/196;
