@@ -1,5 +1,5 @@
 %% Smith 2a ordem
-s = tf('s');                                                               % define sym
+syms s;                                                               % define sym
 
 k = input('Valor de k: ');      
 theta = input('Valor de theta: ');                                         %delay
@@ -17,15 +17,27 @@ tau = t60/t60_tau;
 if (zeta > 1)                                                              %superamortecido
     tau1=(tau*zeta + tau*sqrt(zeta^2-1));
     tau2=(tau*zeta - tau*sqrt(zeta^2-1));
-    GS2 = exp(-theta*s)*k/((tau1*s+1)*(tau2*s+1));
+    GS2 = exp(-theta*s)k/((tau1*s+1)(tau2*s+1));
     
 else                                                                       %subamortecido
     GS2 = exp(-theta*s)*k/(tau*s^2 + 2*zeta*tau*s + 1);
 end
 
-step(GS2);
 
+%
+GS22 = GS2/s;
+gt = ilaplace(GS22);
+ht = matlabFunction(gt);
+y2 = ht(t);
 
+%plot(t,y2);
 
-    
+% e(t)
 
+e = yy2-y2;
+e_sum = sum(e.^2);
+
+EQM = e_sum/196;
+IAE = sum(abs(e));
+ISE = e_sum;
+ITAE = sum(t.*e);

@@ -21,7 +21,7 @@ if(theta<0) theta = 0; end
 if (zeta > 1)
     tau1=(zeta+sqrt(zeta^2-1))/wn;
     tau2=(zeta-sqrt(zeta^2-1))/wn;
-    GM = exp(-theta*s)*K/((tau1*s+1)*(tau2*s+1));
+    GM = exp(-theta*s)K/((tau1*s+1)(tau2*s+1));
     
 else
     tau = 1/wn;
@@ -30,20 +30,20 @@ end
 
 %Gs = exp(-theta*s)*wn^2/(s^2 + 2*zeta*wn*s + wn^2);
 
-%%
+%
 GM2 = GM/s;
 gt = ilaplace(GM2);
 ht = matlabFunction(gt);
 y2 = ht(t);
 
-plot(t,y2);
+%plot(t,y2);
 
-%% e(t)
-e = y2-y1;
-EQM = sum(e.^2)/150;
+% e(t)
+
+e = yy2-y2;
+e_sum = sum(e.^2);
+
+EQM = e_sum/196;
 IAE = sum(abs(e));
-ISE = sum(e.^2);
-%ITAE
-
-    
-
+ISE = e_sum;
+ITAE = sum(t.*e);
