@@ -21,7 +21,7 @@ if(theta<0) theta = 0; end
 if (zeta > 1)
     tau1=(zeta+sqrt(zeta^2-1))/wn;
     tau2=(zeta-sqrt(zeta^2-1))/wn;
-    GM = exp(-theta*s)K/((tau1*s+1)(tau2*s+1));
+    GM = exp(-theta*s)*K/((tau1*s+1)*(tau2*s+1));
     
 else
     tau = 1/wn;

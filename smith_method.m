@@ -1,11 +1,11 @@
 %% read file
 syms s;
 
-a = dlmread('conjunto2.txt');
+a = dlmread('conjunto1.txt');
 t = a(:,2);
 y = a(:,1); %y(t)
 y1 = y;
-%plot(t,y,'r')
+plot(t,y,'r')
 
 %% 
 %yy2 = smooth(a(:,2),a(:,1),'sgolay');
@@ -21,6 +21,7 @@ yy2 = sgolayfilt(y,2,51);
 [b,S,mu]  = polyfit(t, yy2, 15);
 fy = polyval(b,t,S,mu);
 y = fy;
+
 
 
 %% Calculo deflexao

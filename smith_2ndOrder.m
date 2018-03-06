@@ -1,3 +1,4 @@
+
 %% Smith 2a ordem
 syms s;                                                               % define sym
 
@@ -17,7 +18,7 @@ tau = t60/t60_tau;
 if (zeta > 1)                                                              %superamortecido
     tau1=(tau*zeta + tau*sqrt(zeta^2-1));
     tau2=(tau*zeta - tau*sqrt(zeta^2-1));
-    GS2 = exp(-theta*s)k/((tau1*s+1)(tau2*s+1));
+    GS2 = exp(-theta*s)*k/((tau1*s+1)*(tau2*s+1));
     
 else                                                                       %subamortecido
     GS2 = exp(-theta*s)*k/(tau*s^2 + 2*zeta*tau*s + 1);
