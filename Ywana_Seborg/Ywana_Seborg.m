@@ -2,14 +2,11 @@
 
 kc = 1;
 
-%g1 = 1/((s+1)^5);
+
 g1=tf([1],[1 5 10 10 5 1]);
 %g1 = tf([1],[2 5 4 1],'OutputDelay',3);
 
 tf1=feedback(g1,1)
-
-
-%tf1 = g1*kc/(g1*kc+1); 
 
 [y_step, t_step] = step(tf1);
 
@@ -46,7 +43,7 @@ zeta_m1=-log((y_inf-y_m)/(y_p1-y_inf))/sqrt(pi^2+(log((y_inf-y_m)/(y_p1-y_inf)))
 zeta_m2=-log((y_p2-y_inf)/(y_p1-y_inf))/sqrt(4*pi^2+(log((y_p2-y_inf)/(y_p1-y_inf)))^2);
 zeta_m=(zeta_m1+zeta_m2)/2;
 
-theta_m = (2*delta_t*sqrt((1-zeta_m^2)*(kf+1)))/pi*(zeta_m*sqrt(kf+1)+sqrt(zeta_m^2*(kf+1)+kf));
+theta_m = (2*delta_t*sqrt((1-zeta_m^2)*(kf+1)))/(pi*(zeta_m*sqrt(kf+1)+sqrt(zeta_m^2*(kf+1)+kf)));
 tau_m = (delta_t*(zeta_m*sqrt(kf+1)+sqrt(zeta_m^2*(kf+1)+kf))*sqrt((1-zeta_m^2)*(kf+1)))/pi;
 
 k_linha = kf/(kf+1);
