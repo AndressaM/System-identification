@@ -1,10 +1,7 @@
 %% First
 
-kc = 1;
-
-
-g1=tf([1],[1 5 10 10 5 1]);
-%g1 = tf([1],[2 5 4 1],'OutputDelay',3);
+%g1=tf([1],[1 5 10 10 5 1]);
+g1 = tf([1],[2 5 4 1],'OutputDelay',3);
 
 tf1=feedback(g1,1)
 
@@ -36,8 +33,9 @@ kc= 1;
 A=1;
 k = y_inf/(kc*(A-y_inf));
 kf = kc*k;
-delta_t = 5.41;
-%delta_t = 6.7;
+%delta_t = 5.41;
+delta_t = 6.7;
+
 
 zeta_m1=-log((y_inf-y_m)/(y_p1-y_inf))/sqrt(pi^2+(log((y_inf-y_m)/(y_p1-y_inf)))^2);
 zeta_m2=-log((y_p2-y_inf)/(y_p1-y_inf))/sqrt(4*pi^2+(log((y_p2-y_inf)/(y_p1-y_inf)))^2);
@@ -72,7 +70,8 @@ y2 = ht(t_step);
 e = y_step-y2;
 e_sum = sum(e.^2);
 
-EQM = e_sum/196;
+EQM = e_sum/159;
+
 
 
 
