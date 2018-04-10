@@ -34,10 +34,26 @@ title('Comparação entre os sistemas');
 
 gz1 = c2d(gs1,0.1);
 gz2 = c2d(gs2,0.1);
+
+%Ruido dinamico
+e = randn(length(y_gz2),1)*0.05;
+
+% Ruido sistematico
+E = 2;
+
+% Equacao diferencial
+for t=3:(length(y_gz2)+2)
+    y_gz1(t) = -a1*y_gz1(t-1) -a2*y_gz1(t-2) + b1*u(t-1) + b2*u(t-2) + e(t);
+    y_gz2(t) = -a1*y_gz2(t-1) -a2*y_gz2(t-2) + b1*u(t-1) + b2*u(t-2) + e(t);
+end
+
+y_gz1(t) = y_gz1(t) + E;
+y_gz2(t) = y_gz2(t) + E;
+
 % Plotting 
 figure;
-[y_gz1, n_gz1] = step(gz1,0:0.1:12);
-[y_gz2, n_gz2] = step(gz2,0:0.1:12);
+%[y_gz1, n_gz1] = step(gz1,0:0.1:12);
+%[y_gz2, n_gz2] = step(gz2,0:0.1:12);
 
 step(gs1,'k',gz1,'--')
 title('Sistema 1');
