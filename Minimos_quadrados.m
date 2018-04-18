@@ -7,6 +7,8 @@ num1 = [0.5 2  2];
 den1 = [1 3 4 2];
 gs1 = tf(num1, den1);
 
+u = ones(120,1);
+
 num2 = [2.5];
 den2 = [1 1 2.5];
 gs2 = tf(num2, den2);
@@ -30,25 +32,30 @@ title('Comparação entre os sistemas');
 %
 %
 
-% Discretizando
+%Coeficientes (Verificar)
+a1 =  2.705;
+a2 = 2.448;
+a3 =  0.7408;
+b1 = 0.05226;
+b2 =  0.08553;
+b3 = 0.035;
 
+%Discretizando
 gz1 = c2d(gs1,0.1);
 gz2 = c2d(gs2,0.1);
 
+y_gz1 = zeros(120,1);
+y_gz2 = zeros(120,1);
+
+
 %Ruido dinamico
-e = randn(length(y_gz2),1)*0.05;
+e = randn((length(y_gz2)),1)*0.05;
 
-% Ruido sistematico
-E = 2;
-
-% Equacao diferencial
-for t=3:(length(y_gz2)+2)
-    y_gz1(t) = -a1*y_gz1(t-1) -a2*y_gz1(t-2) + b1*u(t-1) + b2*u(t-2) + e(t);
-    y_gz2(t) = -a1*y_gz2(t-1) -a2*y_gz2(t-2) + b1*u(t-1) + b2*u(t-2) + e(t);
+% Equacao a diferença
+for t=4:length(y_gz2)
+    y_gz1(t) = -a1*y_gz1(t-1) -a2*y_gz1(t-2) -a3*y_gz1(t-3) + b1*u(t-1) + b2*u(t-2) + b3*u(t-3) + e(t);
+    y_gz2(t) = -a1*y_gz2(t-1) -a2*y_gz2(t-2) -a3*y_gz2(t-3) + b1*u(t-1) + b2*u(t-2) + b3*u(t-3) + e(t);
 end
-
-y_gz1(t) = y_gz1(t) + E;
-y_gz2(t) = y_gz2(t) + E;
 
 % Plotting 
 figure;
