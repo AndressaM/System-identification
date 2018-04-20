@@ -37,7 +37,7 @@ u2(1:length(y_g2)) = 1;
 a2=gz2.denominator{1,1};
 b2=gz2.numerator{1,1};
 for k=3:length(y_g2)
-    y2(k)=1.881*y2(k-1)-0.9048*y2(k-2)+0.01207*u2(k-1)+0.01167*u2(k-2);
+    y2(k)=-a2(2)*y2(k-1)-a2(3)*y2(k-2)+b2(2)*u2(k-1)+b2(3)*u2(k-2);
 end
 
 figure(2)
@@ -50,13 +50,13 @@ r2 = normrnd(0,0.05,1,127);
 %r2 = randn(1,(length(y2)))*0.05;
 r1 = r2(1:81);
 
-
+y1_rd(1:3)=0;
 for k=4:length(u1)
     y1_rd(k)=-a1(2)*y1_rd(k-1)-a1(3)*y1_rd(k-2)-a1(4)*y1_rd(k-3)+b1(2)*u1(k-1)+b1(3)*u1(k-2)+b1(4)*u1(k-3) + r1(k);
 end
-
+y2_rd(1:2)=0;
 for k=3:length(y_g2)
-    y2_rd(k)=1.881*y2_rd(k-1)-0.9048*y2_rd(k-2)+0.01207*u2(k-1)+0.01167*u2(k-2) + r2(k);
+    y2_rd(k)=-a2(2)*y2_rd(k-1)-a2(3)*y2_rd(k-2)+0.01207*u2(k-1)+0.01167*u2(k-2) + r2(k);
 end
 
 y1_rs = y1 + r1;
