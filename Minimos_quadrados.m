@@ -33,6 +33,11 @@ title('Comparação entre os sistemas');
 %
 
 %Coeficientes (Verificar)
+a1=gz1.denominator{1,1};
+b1=gz1.numerator{1,1};
+a2=gz2.denominator{1,1};
+b2=gz2.numerator{1,1};
+
 a1 =  2.705;
 a2 = 2.448;
 a3 =  0.7408;
@@ -56,19 +61,6 @@ for t=4:length(y_gz2)
     y_gz1(t) = -a1*y_gz1(t-1) -a2*y_gz1(t-2) -a3*y_gz1(t-3) + b1*u(t-1) + b2*u(t-2) + b3*u(t-3) + e(t);
     y_gz2(t) = -a1*y_gz2(t-1) -a2*y_gz2(t-2) -a3*y_gz2(t-3) + b1*u(t-1) + b2*u(t-2) + b3*u(t-3) + e(t);
 end
-
-% Plotting 
-figure;
-%[y_gz1, n_gz1] = step(gz1,0:0.1:12);
-%[y_gz2, n_gz2] = step(gz2,0:0.1:12);
-
-step(gs1,'k',gz1,'--')
-title('Sistema 1');
-legend('Contínuo','Discreto');
-figure;
-step(gs2,'r',gz2,'--')
-title('Sistema 2');
-legend('Contínuo','Discreto');
 
 %% Gerando valores simulados a partir da eq a diferenças para entradas diferentes;
 % Processo de 2a ordem
@@ -101,11 +93,10 @@ for i = 3:length(u)
    % u1 = u(i-1);
    % u2 = u(i-2);
     Y = [Y; y(i)];
-    phi = [phi; -y_r u_r];
+    phi = [phi; y_r u_r];
 end
 
 theta = inv(phi'*phi)*phi'*Y;
-
 
 
 y_est(1:2) = 0;
