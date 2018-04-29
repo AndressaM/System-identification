@@ -30,10 +30,11 @@ figure(1)
 plot(y_g1, 'k:')
 hold on
 plot(y1)
+title('sistema 1');
 
 
 
-y2(1:2)=y_g2(1:2);
+y2(1:2)=0;
 %u2(1:length(y_g2)) = 1;
 u2= -2*rand(length(y_g2), 1);
 u2(1:2) = 0;
@@ -47,6 +48,7 @@ figure(2)
 plot(y_g2, 'k:')
 hold on
 plot(y2)
+title('sistema 2');
 
 % Adicionando ruido
 r2 = normrnd(0,0.05,1,length(y2));
@@ -121,14 +123,34 @@ plot(y2);
 hold on;
 plot(y_est2);
 
-%% 3a
+%% 3a Validar
 
-%Validar
-u_v1= -2*rand(length(y1), 1);
-u_v2= -2*rand(length(y2), 1);
+%Gerando u_v
+u1_v= -2*rand(length(y1), 1);
+u2_v= -2*rand(length(y2), 1);
+u1_v(1:3) = 0;
+u2_v(1:2) = 0;
 
+%Gerando y_v
+y1_v(1:3)=0;
+for k=4:length(u1)
+    y1_v(k)=-a1(2)*y1_v(k-1)-a1(3)*y1_v(k-2)-a1(4)*y1_v(k-3)+b1(2)*u1_v(k-1)+b1(3)*u1_v(k-2)+b1(4)*u1_v(k-3);
+end
 
+for k=3:length(y_g2)
+    y2_v(k)=-a2(2)*y2_v(k-1)-a2(3)*y2_v(k-2)+b2(2)*u2_v(k-1)+b2(3)*u2_v(k-2);
+end
 
+% Matriz phi
+[phi1_v, Y1_v] = montaRegressoresLinear(length(u1_v),Ny,Nu,y1_v,u1_v);
+[phi2_v, Y2_v] = montaRegressoresLinear(length(u2_v),Ny,Nu,y2_v,u2_v);
+
+y1_val = phi1_v * theta;
+y2_val = phi2_v * theta2;
+
+% Erro de validação
+e1_v = y1_v - y1_val;
+e2_v = y2_v - y2_val;
 
 
 
