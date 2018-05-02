@@ -16,7 +16,7 @@ g2=tf(num2,den2);
 
 gz1= c2d(g1,0.1);
 gz2 = c2d(g2,0.1);
-%
+%u1=ones(1,length(y_g1))
 %u1(1:length(y_g1)) = 1;
 u1= -2*rand(length(y_g1), 1);
 u1(1:3) = 0;
@@ -27,10 +27,11 @@ for k=4:length(u1)
     y1(k)=-a1(2)*y1(k-1)-a1(3)*y1(k-2)-a1(4)*y1(k-3)+b1(2)*u1(k-1)+b1(3)*u1(k-2)+b1(4)*u1(k-3);
 end
 figure(1)
-plot(y_g1, 'k:')
+plot(y_g1)
 hold on
-plot(y1)
-title('sistema 1');
+plot(y1,'k')
+title('Sistema 1');
+legend('Curva Original','Aproximação Discreta')
 
 
 
@@ -45,12 +46,17 @@ for k=3:length(y_g2)
 end
 
 figure(2)
-plot(y_g2, 'k:')
+plot(y_g2)
 hold on
-plot(y2)
-title('sistema 2');
+plot(y2,'--k')
+title('Sistema 2');
+legend('Curva Original','Aproximação Discreta')
 
 % Adicionando ruido
+cemean(1:100)=0;
+cemstd(1:100)=0;
+for g=1:100% Calculando 100 vezes
+
 r2 = normrnd(0,0.05,1,length(y2));
 r1 = normrnd(0,0.05,1,length(y1));
 %r2 = randn(1,(length(y2)))*0.05;
@@ -73,13 +79,14 @@ y2_rs(1:2) = zeros(1,2);
 
 % EstimaÃ§Ã£o
 % Para y1
+
 Ny = 3;
 Nu = 3;
 [phi, Y] = montaRegressoresLinear(length(u1),Ny,Nu,y1_rs,u1);
 
 theta = inv(phi'*phi)*phi'*Y;
 
-y_est(1:3) = 0;
+y1_est(1:3) = 0;
 
 aaa1 = -theta(1);
 aaa2 = -theta(2);
@@ -89,13 +96,19 @@ bbb2 = theta(5);
 bbb3 = theta(6);
 
 for t=4:(length(u1))
-    y_est(t) = -aaa1*y_est(t-1) -aaa2*y_est(t-2) -aaa3*y_est(t-3) + bbb1*u1(t-1) + bbb2*u1(t-2) + bbb3*u1(t-3);
+    y1_est(t) = -aaa1*y1_est(t-1) -aaa2*y1_est(t-2) -aaa3*y1_est(t-3) + bbb1*u1(t-1) + bbb2*u1(t-2) + bbb3*u1(t-3);
 end
+
+cemean(g)=mean(y1_est);
+cemstd(g)=std(y1_est);
+
+end;
+
 
 figure
 plot(y1);
 hold on;
-plot(y_est);
+plot(y1_est);
 
 %Para y2
 
@@ -106,7 +119,7 @@ Nu2 = 2;
 [phi2, Y2] = montaRegressoresLinear(length(u2),Ny2,Nu2,y2_rs,u2);
 theta2 = inv(phi2'*phi2)*phi2'*Y2;
 
-y_est2(1:2) = 0;
+y2_est(1:2) = 0;
 
 aa1 = -theta2(1);
 aa2 = -theta2(2);
@@ -115,13 +128,15 @@ bb2 = theta2(4);
 
 
 for t=3:(length(u2))
-    y_est2(t) = -aa1*y_est2(t-1) -aa2*y_est2(t-2) + bb1*u2(t-1) + bb2*u2(t-2);
+    y2_est(t) = -aa1*y2_est(t-1) -aa2*y2_est(t-2) + bb1*u2(t-1) + bb2*u2(t-2);
 end
 
 figure
 plot(y2);
 hold on;
-plot(y_est2);
+plot(y2_est);
+
+
 
 %% 3a Validar
 
@@ -143,7 +158,7 @@ end
 
 % Matriz phi
 [phi1_v, Y1_v] = montaRegressoresLinear(length(u1_v),Ny,Nu,y1_v,u1_v);
-[phi2_v, Y2_v] = montaRegressoresLinear(length(u2_v),Ny,Nu,y2_v,u2_v);
+[phi2_v, Y2_v] = montaRegressoresLinear(length(u2_v),Ny2,Nu2,y2_v,u2_v);
 
 y1_val = phi1_v * theta;
 y2_val = phi2_v * theta2;
@@ -152,7 +167,31 @@ y2_val = phi2_v * theta2;
 e1_v = y1_v - y1_val;
 e2_v = y2_v - y2_val;
 
+% SEQ de y1
+SEQ1=0;
+for k=1:(length(u1)-6)
+    SEQ1=(y1_v(k)-y1_val(k)')^2;
+end;
+% SEQM de y1
+SEQM1=0;
+for k=1:(length(u1)-6)
+    SEQM1=1/k*((y1_v(k)-y1_val(k)')^2);
+end;
 
+% SEQ de y2
+SEQ2=0;
+for k=1:(length(u2)-2)
+    SEQ2=(y2_v(k)-y2_val(k)')^2;
+end;
+% SEQM de y2
+SEQM2=0;
+for k=1:(length(u2)-2)
+    SEQM2=1/k*((y2_v(k)-y2_val(k)')^2);
+end;
 
+% Coeficientes de correlação Multipla
 
+for k=1:(length(u1)-6)
+R1=sqrt(((y1_v(k)-y1_val(k))^2)/(y1_v(k)-mean(y1_v))^2);
+end;
 
