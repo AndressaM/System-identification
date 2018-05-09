@@ -193,5 +193,9 @@ end;
 
 
 for k=1:(length(u1)-6)
-R1=sqrt(((y1_v(k)-y1_val(k))^2)/(y1_v(k)-mean(y1_v))^2);
+R1=sqrt(1-(((y1_v(k)-y1_val(k))^2)/(y1_v(k)-mean(y1_v))^2));
+end;
+
+for k=1:(length(u2)-2)
+R2=sqrt(1-(((y2_v(k)-y2_val(k))^2)/(y2_v(k)-mean(y2_v))^2));
 end;
