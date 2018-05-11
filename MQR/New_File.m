@@ -23,6 +23,7 @@ u1(1:3) = 0;
 y1(1:3)=0;
 a1=gz1.den{1,1};
 b1=gz1.num{1,1};
+
 for k=4:length(u1)
     y1(k)=-a1(2)*y1(k-1)-a1(3)*y1(k-2)-a1(4)*y1(k-3)+b1(2)*u1(k-1)+b1(3)*u1(k-2)+b1(4)*u1(k-3);
 end
@@ -199,3 +200,26 @@ end;
 for k=1:(length(u2)-2)
 R2=sqrt(1-(((y2_v(k)-y2_val(k))^2)/(y2_v(k)-mean(y2_v))^2));
 end;
+
+%% 4 ARX ARMAX
+% Dados 1
+
+a = dlmread('dados_2.txt');
+u = a(:,2)'; %u(t)
+y = a(:,1)'; %y(t)
+y1 = y;
+Ny = 1;
+Nu = 1;
+[phi, Y] = montaRegressoresLinear(length(u),Ny,Nu,y,u);
+theta = inv(phi'*phi)*phi'*Y;
+y_estarx = phi*theta;
+%%
+y1 = y;
+Ny = 5;
+Nu = 5;
+[phi, Y] = montaRegressoresLinear(length(u),Ny,Nu,y,u);
+theta = inv(phi'*phi)*phi'*Y;
+y_estarx = phi*theta;
+
+
+    
