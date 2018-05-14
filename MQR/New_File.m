@@ -53,10 +53,10 @@ plot(y2,'--k')
 title('Sistema 2');
 legend('Curva Original','Aproximação Discreta')
 
-% Adicionando ruido
+%% 2 questão Adicionando ruido
 cemean(1:100)=0;
 cemstd(1:100)=0;
-for g=1:100% Calculando 100 vezes
+%for g=1:100% Calculando 100 vezes
 
 r2 = normrnd(0,0.05,1,length(y2));
 r1 = normrnd(0,0.05,1,length(y1));
@@ -83,12 +83,13 @@ y2_rs(1:2) = zeros(1,2);
 
 Ny = 3;
 Nu = 3;
-[phi, Y] = montaRegressoresLinear(length(u1),Ny,Nu,y1_rs,u1);
+[phi, Y] = montaRegressoresLinear(length(u1),Ny,Nu,y1_rd,u1);
 
 theta = inv(phi'*phi)*phi'*Y;
 
 y1_est(1:3) = 0;
 
+%ordem 3
 aaa1 = -theta(1);
 aaa2 = -theta(2);
 aaa3 = -theta(3);
@@ -97,13 +98,14 @@ bbb2 = theta(5);
 bbb3 = theta(6);
 
 for t=4:(length(u1))
+    
     y1_est(t) = -aaa1*y1_est(t-1) -aaa2*y1_est(t-2) -aaa3*y1_est(t-3) + bbb1*u1(t-1) + bbb2*u1(t-2) + bbb3*u1(t-3);
 end
 
-cemean(g)=mean(y1_est);
-cemstd(g)=std(y1_est);
+%cemean(g)=mean(y1_est);
+%cemstd(g)=std(y1_est);
 
-end;
+%end;
 
 
 figure
