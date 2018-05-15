@@ -268,6 +268,7 @@ plot(y_e);
 hold on;
 plot(y_est);
 
+e = y_e - y_est;
 
 %Validacao
 
@@ -280,11 +281,12 @@ for t=1:(n*3)
     w_v(t) = 0;
     erro_v(t)= 0;
 end
-
+    phi_vaux = [];
 % Matriz phi
 
 for t=(n*3):(N/2)
     phi_v = [-y_v(t-1); -y_v(t-2); u_v(t-1); u_v(t-2); w_v(t-1); w_v(t-2)];
+    phi_vaux = [phi_vaux phi_v];
     erro_v(t) = y_v(t) - theta_v'*phi_v;
     k = p*phi_v/(lambda+phi_v'*p*phi_v);
     theta_v = theta_v+k*erro_v(t);
@@ -292,7 +294,14 @@ for t=(n*3):(N/2)
     w_v(t) = y_v(t)-theta_v'*phi_v;
 end
 
-y_val = phi_v' * theta;
+y_val = phi_vaux' * theta;
+y_val = y_val';
 
 % Erro de validação
-e1_v = y_v - y_val;
+e_v = y_v(6:245) - y_val(1:240);
+%e1_v = y_v - y_val;
+
+figure;
+plot(y_val(1:240))
+hold on
+plot(y_v(6:245))
