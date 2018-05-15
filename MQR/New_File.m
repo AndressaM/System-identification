@@ -223,15 +223,22 @@ Nu = 5;
 theta = inv(phi'*phi)*phi'*Y;
 y_estarx = phi*theta;
 
-%% Minimos quadrados estendido
+%% Minimos quadrados estendido (ARMAX)
 
-clear,clc,close
+clear,clc,
+close all
 
-a = dlmread('dados_2.txt');
+a = dlmread('dados_1.txt');
 u = a(:,2)'; %u(t)
 y = a(:,1)'; %y(t)
 N = length(y);
 n = 2; %Ordem
+
+%Dividindo os pares entrada-saida para estimacao e validacao
+y_e = y(1:(N/2));
+y_v = y((N/2):N);
+u_e = u(1:(N/2));
+u_v = u((N/2):N);
 
 lambda = 1;
 p = 1000*eye(n*3,n*3);
@@ -239,25 +246,53 @@ theta = zeros(n*3,1);
 
 
 for t=1:(n*3)
-    y(t) = 0;
+    y_e(t) = 0;
     w(t) = 0;
     erro(t)= 0;
 end
 
-for t=(n*3):N
-    phi = [-y(t-1); -y(t-2); u(t-1); u(t-2); w(t-1); w(t-2)];
-    erro(t) = y(t) - theta'*phi;
+for t=(n*3):(N/2)
+    phi = [-y_e(t-1); -y_e(t-2); u(t-1); u(t-2); w(t-1); w(t-2)];
+    erro(t) = y_e(t) - theta'*phi;
     k = p*phi/(lambda+phi'*p*phi);
     theta = theta+k*erro(t);
     p = (p-k*phi'*p)/lambda;
-    w(t) = y(t)-theta'*phi;
+    w(t) = y_e(t)-theta'*phi;
 end
 
-for t = (n*3):N
-    y_est(t) = -theta(1)*y(t-1) - theta(2)*y(t-2) + theta(3)*u(t-1) + theta(4)*u(t-2);
+for t = (n*3):(N/2)
+    y_est(t) = -theta(1)*y_e(t-1) - theta(2)*y_e(t-2) + theta(3)*u(t-1) + theta(4)*u(t-2);
 end
     
-plot(y);
+plot(y_e);
 hold on;
 plot(y_est);
-    
+
+
+%Validacao
+
+lambda = 1;
+p = 1000*eye(n*3,n*3);
+theta_v = zeros(n*3,1);
+
+for t=1:(n*3)
+    y_v(t) = 0;
+    w_v(t) = 0;
+    erro_v(t)= 0;
+end
+
+% Matriz phi
+
+for t=(n*3):(N/2)
+    phi_v = [-y_v(t-1); -y_v(t-2); u_v(t-1); u_v(t-2); w_v(t-1); w_v(t-2)];
+    erro_v(t) = y_v(t) - theta_v'*phi_v;
+    k = p*phi_v/(lambda+phi_v'*p*phi_v);
+    theta_v = theta_v+k*erro_v(t);
+    p = (p-k*phi_v'*p)/lambda;
+    w_v(t) = y_v(t)-theta_v'*phi_v;
+end
+
+y_val = phi_v' * theta;
+
+% Erro de validação
+e1_v = y_v - y_val;
