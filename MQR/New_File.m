@@ -269,6 +269,7 @@ hold on;
 plot(y_est);
 
 e = y_e - y_est;
+mse = immse(y_e,y_est);
 
 %Validacao
 
@@ -287,7 +288,7 @@ end
 for t=(n*3):(N/2)
     phi_v = [-y_v(t-1); -y_v(t-2); u_v(t-1); u_v(t-2); w_v(t-1); w_v(t-2)];
     phi_vaux = [phi_vaux phi_v];
-    erro_v(t) = y_v(t) - theta_v'*phi_v;
+    erro_v(t) = y_v(t) - theta_v'*phi_v;    
     k = p*phi_v/(lambda+phi_v'*p*phi_v);
     theta_v = theta_v+k*erro_v(t);
     p = (p-k*phi_v'*p)/lambda;
