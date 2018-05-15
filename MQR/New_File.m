@@ -32,7 +32,7 @@ plot(y_g1)
 hold on
 plot(y1,'k')
 title('Sistema 1');
-legend('Curva Original','AproximaÁ„o Discreta')
+legend('Curva Original','Aproxima√ß√£o Discreta')
 
 
 
@@ -51,9 +51,9 @@ plot(y_g2)
 hold on
 plot(y2,'--k')
 title('Sistema 2');
-legend('Curva Original','AproximaÁ„o Discreta')
+legend('Curva Original','Aproxima√ß√£o Discreta')
 
-%% 2 quest„o Adicionando ruido
+%% 2 quest√£o Adicionando ruido
 cemean(1:100)=0;
 cemstd(1:100)=0;
 %for g=1:100% Calculando 100 vezes
@@ -78,7 +78,7 @@ y1_rs(1:3) = zeros(1,3);
 y2_rs(1:2) = zeros(1,2);
 
 
-% Estima√ß√£o
+% Estima√É¬ß√É¬£o
 % Para y1
 
 Ny = 3;
@@ -166,7 +166,7 @@ end
 y1_val = phi1_v * theta;
 y2_val = phi2_v * theta2;
 
-% Erro de validaÁ„o
+% Erro de valida√ß√£o
 e1_v = y1_v - y1_val;
 e2_v = y2_v - y2_val;
 
@@ -192,7 +192,7 @@ for k=1:(length(u2)-2)
     SEQM2=1/k*((y2_v(k)-y2_val(k)')^2);
 end;
 
-% Coeficientes de correlaÁ„o Multipla
+% Coeficientes de correla√ß√£o Multipla
 
 
 for k=1:(length(u1)-6)
@@ -223,5 +223,38 @@ Nu = 5;
 theta = inv(phi'*phi)*phi'*Y;
 y_estarx = phi*theta;
 
+%% Minimos quadrados estendido
+
+clear,clc
+
+a = dlmread('dados_2.txt');
+u = a(:,2)'; %u(t)
+y = a(:,1)'; %y(t)
+N = length(y);
+
+lambda = 1;
+p = 1000*eye(6,6);
+theta = zeros(6,1);
+
+
+for t=1:6
+    y(t) = 0;
+    w(t) = 0;
+    erro(t)= 0;
+end
+
+for t=6:N
+    phi = [-y(t-1); -y(t-2); u(t-1); u(t-2); w(t-1); w(t-2)];
+    erro(t) = y(t) - theta'*phi;
+    k = p*phi/(lambda+phi'*p*phi);
+    theta = theta+k*erro(t);
+    p = (p-k*phi'*p)/lambda;
+    w(t) = y(t)-theta'*phi;
+end
+
+for t = 6:N
+    y_est(t) = theta(1)*y(t-1) - theta(2)*y(t-2) + theta(3)*u(t-1) + theta(4)*u(t-2);
+end
+    
 
     
