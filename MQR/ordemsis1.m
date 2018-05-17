@@ -1,0 +1,80 @@
+Ny = 5;
+Nu = 5;
+u1(1:5)=0;
+[phi, Y] = montaRegressoresLinear(length(u1),Ny,Nu,y1,u1);
+
+theta = inv(phi'*phi)*phi'*Y;
+%% ordem 1
+y1_est(1:1) = 0;
+aaa1 = -theta(1);
+bbb1 = theta(2);
+for t=4:(length(u1))
+    
+    y1_est(t) = -aaa1*y1_est(t-1)+ bbb1*u1(t-1);
+end
+%% ordem 2
+y1_est(1:2) = 0;
+u1(1:2)=0;
+aaa1 = -theta(1);
+aaa2 = -theta(2);
+bbb1 = theta(3);
+bbb2 = theta(4);
+for t=4:(length(u1))
+    
+    y1_est(t) = -aaa1*y1_est(t-1) -aaa2*y1_est(t-2) + bbb1*u1(t-1) + bbb2*u1(t-2);
+end
+%% ordem 3
+y1_est(1:3) = 0;
+%u1(1:3) = 0;
+aaa1 = -theta(1);
+aaa2 = -theta(2);
+aaa3 = -theta(3);
+bbb1 = theta(4);
+bbb2 = theta(5);
+bbb3 = theta(6);
+for t=4:(length(u1))
+    
+    y1_est(t) = -aaa1*y1_est(t-1) -aaa2*y1_est(t-2) -aaa3*y1_est(t-3) + bbb1*u1(t-1) + bbb2*u1(t-2) + bbb3*u1(t-3);
+end
+%% ordem 4
+y1_est(1:4) = 0;
+aaa1 = -theta(1);
+aaa2 = -theta(2);
+aaa3 = -theta(3);
+aaa4 = -theta(4);
+bbb1 = theta(5);
+bbb2 = theta(6);
+bbb3 = theta(7);
+bbb4 = theta(8);
+for t=5:(length(u1))
+    y1_est(t) = -aaa1*y1_est(t-1) -aaa2*y1_est(t-2) -aaa3*y1_est(t-3) -aaa4*y1_est(t-4)+ bbb1*u1(t-1) + bbb2*u1(t-2) + bbb3*u1(t-3)+ bbb4*u1(t-4);
+end
+
+%% ordem 5
+
+y1_est(1:5) = 0;
+aaa1 = -theta(1);
+aaa2 = -theta(2);
+aaa3 = -theta(3);
+aaa4 = -theta(4);
+aaa5 = -theta(5);
+bbb1 = theta(6);
+bbb2 = theta(7);
+bbb3 = theta(8);
+bbb4 = theta(9);
+bbb5 = theta(10);
+for t=6:(length(u1))
+    
+    y1_est(t) = -aaa1*y1_est(t-1) -aaa2*y1_est(t-2) -aaa3*y1_est(t-3) -aaa4*y1_est(t-4)-aaa5*y1_est(t-5)+bbb1*u1(t-1) + bbb2*u1(t-2) + bbb3*u1(t-3)+ bbb4*u1(t-4)+bbb5*u1(t-5);
+end
+%% plot
+
+figure
+
+plot(y1);
+hold on;
+plot(y1_est);
+residuo=y1-y1_est;
+plot(residuo)
+title('Ordem 1')
+legend('y','y_e_s_t','residuo')
