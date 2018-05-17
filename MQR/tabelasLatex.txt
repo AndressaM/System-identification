@@ -1,0 +1,29 @@
+Tabela ordem x residuo
+\begin{table}[]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{|c|l|}
+\hline
+\multicolumn{1}{|l|}{Ordem} & \textbackslash{}delta \\ \hline
+1                           & -0.0438               \\ \hline
+2                           & -0.0293               \\ \hline
+3                           & 4.5085e-06            \\ \hline
+4                           & -0.0182               \\ \hline
+5                           & -0.0230               \\ \hline
+\end{tabular}
+\end{table}
+
+Tabela de validação sistema 1 (ordem 3 e com ruido)
+\begin{table}[]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{|c|c|c|l|}
+\hline
+SEQ                   & SEQM                  & CRM               & S/R \\ \hline
+1.324053127778302e-04 & 1.059242502222642e-06 & 0.997415034216612 &     \\ \hline
+\end{tabular}
+\end{table}
+
+Tabela de validação sistema 2 (ordem 3 e com ruido)
