@@ -32,11 +32,11 @@ plot(y_g1)
 hold on
 plot(y1,'k')
 title('Sistema 1');
-legend('Curva Original','AproximaÁ„o Discreta')
+legend('Curva Original','Aproxima√ß√£o Discreta')
 
 
 
-y2(1:1)=0;
+y2(1:2)=0;
 %u2(1:length(y_g2)) = 1;
 u2= -2*rand(length(y_g2), 1);
 u2(1:2) = 0;
@@ -51,14 +51,12 @@ plot(y_g2)
 hold on
 plot(y2,'--k')
 title('Sistema 2');
-legend('Curva Original','AproximaÁ„o Discreta')
+legend('Curva Original','Aproxima√ß√£o Discreta')
 
-%% 2 quest„o Adicionando ruido
+%% 2 quest√£o Adicionando ruido
 cemean(1:100)=0;
 cemstd(1:100)=0;
-cemean2(1:100)=0;
-cemstd2(1:100)=0;
-for g=1:100% Calculando 100 vezes
+%for g=1:100% Calculando 100 vezes
 
 r2 = normrnd(0,0.05,1,length(y2));
 r1 = normrnd(0,0.05,1,length(y1));
@@ -80,7 +78,7 @@ y1_rs(1:3) = zeros(1,3);
 y2_rs(1:2) = zeros(1,2);
 
 
-% Estima√ß√£o
+% Estima√É¬ß√É¬£o
 % Para y1
 
 Ny = 3;
@@ -104,42 +102,37 @@ for t=4:(length(u1))
     y1_est(t) = -aaa1*y1_est(t-1) -aaa2*y1_est(t-2) -aaa3*y1_est(t-3) + bbb1*u1(t-1) + bbb2*u1(t-2) + bbb3*u1(t-3);
 end
 
-cemean(g)=mean(y1_est);
-cemstd(g)=std(y1_est);
+%cemean(g)=mean(y1_est);
+%cemstd(g)=std(y1_est);
+
+%end;
 
 
-
-
-
-%figure
-%plot(y1);
-%hold on;
-%plot(y1_est);
+figure
+plot(y1);
+hold on;
+plot(y1_est);
 
 %Para y2
 
-Ny2 = 3;
-Nu2 = 3;
+Ny2 = 2;
+Nu2 = 2;
 %y2(3:127) = y2(1:125);
 %y2(1:2) = 0;
 [phi2, Y2] = montaRegressoresLinear(length(u2),Ny2,Nu2,y2_rs,u2);
 theta2 = inv(phi2'*phi2)*phi2'*Y2;
 
-y2_est(1:3) = 0;
+y2_est(1:2) = 0;
 
 aa1 = -theta2(1);
 aa2 = -theta2(2);
-aa3 = -theta2(3);
-bb1 = theta2(4);
-bb2 = theta2(5);
-bb3 = theta2(6);
-for t=4:(length(u2))
-    y2_est(t) = -aa1*y2_est(t-1) -aa2*y2_est(t-2) -aa3*y2_est(t-3) + bb1*u2(t-1) + bb2*u2(t-2) + bb3*u2(t-3);
-end
+bb1 = theta2(3);
+bb2 = theta2(4);
 
-cemean2(g)=mean(y2_est);
-cemstd2(g)=std(y2_est);
-end;
+
+for t=3:(length(u2))
+    y2_est(t) = -aa1*y2_est(t-1) -aa2*y2_est(t-2) + bb1*u2(t-1) + bb2*u2(t-2);
+end
 
 figure
 plot(y2);
@@ -173,7 +166,7 @@ end
 y1_val = phi1_v * theta;
 y2_val = phi2_v * theta2;
 
-% Erro de validaÁ„o
+% Erro de valida√ß√£o
 e1_v = y1_v - y1_val;
 e2_v = y2_v - y2_val;
 
@@ -199,13 +192,13 @@ for k=1:(length(u2)-2)
     SEQM2=1/k*((y2_v(k)-y2_val(k)')^2);
 end;
 
-% Coeficientes de correlaÁ„o Multipla
+% Coeficientes de correla√ß√£o Multipla
 
-%1
+
 for k=1:(length(u1)-6)
 R1=sqrt(1-(((y1_v(k)-y1_val(k))^2)/(y1_v(k)-mean(y1_v))^2));
 end;
-%2
+
 for k=1:(length(u2)-2)
 R2=sqrt(1-(((y2_v(k)-y2_val(k))^2)/(y2_v(k)-mean(y2_v))^2));
 end;
@@ -230,5 +223,86 @@ Nu = 5;
 theta = inv(phi'*phi)*phi'*Y;
 y_estarx = phi*theta;
 
+%% Minimos quadrados estendido (ARMAX)
 
+clear,clc,
+close all
+
+a = dlmread('dados_1.txt');
+u = a(:,2)'; %u(t)
+y = a(:,1)'; %y(t)
+N = length(y);
+n = 2; %Ordem
+
+%Dividindo os pares entrada-saida para estimacao e validacao
+y_e = y(1:(N/2));
+y_v = y((N/2):N);
+u_e = u(1:(N/2));
+u_v = u((N/2):N);
+
+lambda = 1;
+p = 1000*eye(n*3,n*3);
+theta = zeros(n*3,1);
+
+
+for t=1:(n*3)
+    y_e(t) = 0;
+    w(t) = 0;
+    erro(t)= 0;
+end
+
+for t=(n*3):(N/2)
+    phi = [-y_e(t-1); -y_e(t-2); u(t-1); u(t-2); w(t-1); w(t-2)];
+    erro(t) = y_e(t) - theta'*phi;
+    k = p*phi/(lambda+phi'*p*phi);
+    theta = theta+k*erro(t);
+    p = (p-k*phi'*p)/lambda;
+    w(t) = y_e(t)-theta'*phi;
+end
+
+for t = (n*3):(N/2)
+    y_est(t) = -theta(1)*y_e(t-1) - theta(2)*y_e(t-2) + theta(3)*u(t-1) + theta(4)*u(t-2);
+end
     
+plot(y_e);
+hold on;
+plot(y_est);
+
+e = y_e - y_est;
+mse = immse(y_e,y_est);
+
+%Validacao
+
+lambda = 1;
+p = 1000*eye(n*3,n*3);
+theta_v = zeros(n*3,1);
+
+for t=1:(n*3)
+    y_v(t) = 0;
+    w_v(t) = 0;
+    erro_v(t)= 0;
+end
+    phi_vaux = [];
+% Matriz phi
+
+for t=(n*3):(N/2)
+    phi_v = [-y_v(t-1); -y_v(t-2); u_v(t-1); u_v(t-2); w_v(t-1); w_v(t-2)];
+    phi_vaux = [phi_vaux phi_v];
+    erro_v(t) = y_v(t) - theta_v'*phi_v;    
+    k = p*phi_v/(lambda+phi_v'*p*phi_v);
+    theta_v = theta_v+k*erro_v(t);
+    p = (p-k*phi_v'*p)/lambda;
+    w_v(t) = y_v(t)-theta_v'*phi_v;
+end
+
+y_val = phi_vaux' * theta;
+y_val = y_val';
+
+% Erro de valida√ß√£o
+e_v = y_v(6:245) - y_val(1:240);
+%e1_v = y_v - y_val;
+
+figure;
+plot(y_val(1:240))
+hold on
+plot(y_v(6:245))

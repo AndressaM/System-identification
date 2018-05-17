@@ -14,7 +14,7 @@ for t=4:(length(u1))
 end
 %% ordem 2
 y1_est(1:2) = 0;
-u1(1:2)=0;
+
 aaa1 = -theta(1);
 aaa2 = -theta(2);
 bbb1 = theta(3);
@@ -76,5 +76,5 @@ hold on;
 plot(y1_est);
 residuo=y1-y1_est;
 plot(residuo)
-title('Ordem 1')
+title('Ordem 5')
 legend('y','y_e_s_t','residuo')
