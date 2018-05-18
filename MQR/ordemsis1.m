@@ -76,5 +76,5 @@ hold on;
 plot(y1_est);
 residuo=y1-y1_est;
 plot(residuo)
-title('Ordem 5')
+title('Ordem 4')
 legend('y','y_e_s_t','residuo')

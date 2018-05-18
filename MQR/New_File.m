@@ -1,7 +1,7 @@
 clear all
 close all
 clc
-% Atividade 3 
+%% Atividade 3 
 
 num1=[0.5 2 2];
 den1=[1 3 4 2];

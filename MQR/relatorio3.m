@@ -16,9 +16,9 @@ g2=tf(num2,den2);
 
 gz1= c2d(g1,0.1);
 gz2 = c2d(g2,0.1);
-%u1=ones(1,length(y_g1))
+u1=ones(1,length(y_g1))
 %u1(1:length(y_g1)) = 1;
-u1= -2*rand(length(y_g1), 1);
+%u1= -2*rand(length(y_g1), 1);
 u1(1:3) = 0;
 y1(1:3)=0;
 a1=gz1.den{1,1};
@@ -37,8 +37,8 @@ legend('Curva Original','Aproximação Discreta')
 
 
 y2(1:2)=0;
-%u2(1:length(y_g2)) = 1;
-u2= -2*rand(length(y_g2), 1);
+u2(1:length(y_g2)) = 1;
+%u2= -2*rand(length(y_g2), 1);
 u2(1:2) = 0;
 a2=gz2.den{1,1};
 b2=gz2.num{1,1};
