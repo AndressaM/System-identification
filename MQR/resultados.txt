@@ -1,0 +1,29 @@
+======= SIstema 1=======
+ordem   mean(residuo) -> Entrada aleatoria
+1	-0.0131
+2	-6.6254e-04
+3	-8.4972e-07
+4	1.7457e+20
+5	
+ordem   mean(residuo) -> Entrada degrau
+1	-0.0131
+2	-6.6254e-04
+3	-8.4972e-07
+4	1.7457e+20
+5
+############ Sistema 2 ############
+
+ordem   mean(residuo)
+1	-0.3361
+2	5.4638e-12
+3	-0.0054
+4	-0.0074
+5	-0.0105
+
+ordem   mean(residuo) -> Entrada degrau
+1	0.0124
+2	-6.9007e-12
+3	0.4666
+4	3.3340e+45
+5 	7.2263e+26
+

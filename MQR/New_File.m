@@ -1,7 +1,7 @@
 clear all
 close all
 clc
-%% Atividade 3 
+% Atividade 3 
 
 num1=[0.5 2 2];
 den1=[1 3 4 2];
@@ -144,7 +144,8 @@ plot(y2_est);
 %% 3a Validar
 
 %Gerando u_v
-u1_v= -2*rand(length(y1), 1);
+u1_v(1:length(y1)) = 1;
+%u1_v= -2*rand(length(y1), 1);
 u2_v= -2*rand(length(y2), 1);
 u1_v(1:3) = 0;
 u2_v(1:2) = 0;
@@ -194,7 +195,6 @@ end;
 
 % Coeficientes de correlação Multipla
 
-
 for k=1:(length(u1)-6)
 R1=sqrt(1-(((y1_v(k)-y1_val(k))^2)/(y1_v(k)-mean(y1_v))^2));
 end;
@@ -202,6 +202,19 @@ end;
 for k=1:(length(u2)-2)
 R2=sqrt(1-(((y2_v(k)-y2_val(k))^2)/(y2_v(k)-mean(y2_v))^2));
 end;
+
+%%
+%S/R Raz�o sinal-ruido
+
+for k=1:(length(u1)-6)
+%delta_prbs2=(y1_v(k)-mean(y1_v))^2/length(y1)
+end;
+for k=1:(length(u1)-6)
+delta_degrau2=(y1_v(k)-mean(y1_v))^2/length(y1)
+end;
+
+sr1=(delta_prbs2)/delta_degrau2;
+
 
 %% 4 ARX ARMAX
 % Dados 1

@@ -1,5 +1,5 @@
 n=5;
-u2(1:5) = 0;
+u2(1:n) = 0;
 [phi2, Y2] = montaRegressoresLinear(length(u2),n,n,y2,u2);
 theta2 = inv(phi2'*phi2)*phi2'*Y2;
 
@@ -75,3 +75,6 @@ residuo=y2-y2_est;
 plot(residuo)
 title('Ordem 5')
 legend('y','y_e_s_t','residuo')
+mean(residuo)
+
+
